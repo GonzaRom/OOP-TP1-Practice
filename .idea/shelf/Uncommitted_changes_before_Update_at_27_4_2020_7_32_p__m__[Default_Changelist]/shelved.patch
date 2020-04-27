@@ -1,0 +1,785 @@
+Index: src/com/utn/Company.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn;\r\n\r\nimport com.utn.Persons.Employee;\r\nimport com.utn.Proyects.ConstructionSite;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class Company {\r\n    private String name;\r\n    private ArrayList<Employee> employees;\r\n    private ArrayList<ConstructionSite> constructionSites;\r\n\r\n    public Company(String name) {\r\n        this.name = name;\r\n        this.employees = new ArrayList<>();\r\n        this.constructionSites = new ArrayList<>();\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public void setEmployees(ArrayList<Employee> employees) {\r\n        this.employees = employees;\r\n    }\r\n\r\n    public void setConstructionSite(ArrayList<ConstructionSite> constructionSites) {\r\n        this.constructionSites = constructionSites;\r\n    }\r\n\r\n    public void addConstructionSite(ConstructionSite constructionSite) {\r\n        this.constructionSites.add(constructionSite);\r\n    }\r\n\r\n    public void addEmployee(Employee employee) {\r\n        this.employees.add(employee);\r\n    }\r\n\r\n    public ConstructionSite getConstructionSite(int i) {\r\n       if (i < 0 || i > constructionSites.size()-1) return null;\r\n        else\r\n            return constructionSites.get(i);\r\n    }\r\n\r\n    public ArrayList<Employee> getEmployees() {\r\n        return employees;\r\n    }\r\n\r\n    public ArrayList<ConstructionSite> getConstructionSites() {\r\n        return constructionSites;\r\n    }\r\n\r\n    public String printConstructionSites() {\r\n        if (constructionSites.isEmpty()) {\r\n            return \"E R R O R no construction sites assigned to the company\";\r\n        } else {\r\n            StringBuilder stringConstructionSites = new StringBuilder();\r\n            for (ConstructionSite currentSite : constructionSites) {\r\n                stringConstructionSites.append(currentSite.toString());\r\n            }\r\n            return \"Construction Sites:\" + stringConstructionSites.toString();\r\n        }\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/utn/Company.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Company.java	(date 1588026691856)
+@@ -1,7 +1,7 @@
+ package com.utn;
+ 
+-import com.utn.Persons.Employee;
+-import com.utn.Proyects.ConstructionSite;
++import com.utn.Employees.*;
++import com.utn.Proyects.*;
+ 
+ import java.util.ArrayList;
+ 
+@@ -16,6 +16,7 @@
+         this.constructionSites = new ArrayList<>();
+     }
+ 
++    ///Setters and Getters
+     public String getName() {
+         return name;
+     }
+@@ -40,12 +41,6 @@
+         this.employees.add(employee);
+     }
+ 
+-    public ConstructionSite getConstructionSite(int i) {
+-       if (i < 0 || i > constructionSites.size()-1) return null;
+-        else
+-            return constructionSites.get(i);
+-    }
+-
+     public ArrayList<Employee> getEmployees() {
+         return employees;
+     }
+@@ -53,17 +48,98 @@
+     public ArrayList<ConstructionSite> getConstructionSites() {
+         return constructionSites;
+     }
++    ///
+ 
+-    public String printConstructionSites() {
++    public ConstructionSite getConstructionSite(int i) {
++        if (i < 0 || i > constructionSites.size() - 1) return null;
++        else
++            return constructionSites.get(i);
++    }
++
++    ///Return a String with all the details of the construction site
++    public String printConstructionSitesFull() {
+         if (constructionSites.isEmpty()) {
+             return "E R R O R no construction sites assigned to the company";
+         } else {
+             StringBuilder stringConstructionSites = new StringBuilder();
+             for (ConstructionSite currentSite : constructionSites) {
+                 stringConstructionSites.append(currentSite.toString());
++                stringConstructionSites.append("\n");
+             }
+             return "Construction Sites:" + stringConstructionSites.toString();
+         }
+     }
+ 
++    ///Return a String with all the construction site in order to chose one
++    public String printConstructionSites() {
++        if (constructionSites.isEmpty()) return "E R R O R empty list of employees";
++        else {
++            StringBuilder stringConstructionSites = new StringBuilder();
++            for (int i = 0; i < constructionSites.size(); i++) {
++                ConstructionSite currentSite = constructionSites.get(i);
++                stringConstructionSites.append(i);
++                stringConstructionSites.append(". Type: ");
++                stringConstructionSites.append(currentSite.getClass().getSimpleName());
++                stringConstructionSites.append("\tAddress:");
++                stringConstructionSites.append(currentSite.getAddress());
++                stringConstructionSites.append("\n");
++            }
++            return stringConstructionSites.toString();
++        }
++    }
++
++    ///Return a String with a list of the Employees to chose one
++    public String printEmployees() {
++        if (employees.isEmpty()) return "E R R O R empty list of employees";
++        else {
++            StringBuilder stringEmployees = new StringBuilder();
++            for (int i = 0; i < employees.size(); i++) {
++                Employee employee = employees.get(i);
++                stringEmployees.append(i);
++                stringEmployees.append(". Rol:");
++                stringEmployees.append(employee.getClass().getSimpleName());
++                stringEmployees.append(" \tName:");
++                stringEmployees.append(employee.getName());
++                stringEmployees.append("\n");
++            }
++            return stringEmployees.toString();
++        }
++    }
++
++    ///Return a String with the correct Work message depending of the type of Employee
++    public String printWorkAnyEmployee(int pos) {
++        Employee employee = employees.get(pos);
++        String work = (employee.getClass() == Architect.class) ? ((Architect) employee).createDrawing() :
++                (employee.getClass() == Worker.class) ? ((Worker) employee).work() : ((ConstructForeman) employee).work();
++        return "\n" + work;
++    }
++
++    ///Return a String with all the details of ANY employee
++    public String printAnyEmployee(int pos) {
++        Employee employee = employees.get(pos);
++        String employeeToString = (employee.getClass() == Architect.class) ? ((Architect) employee).toString() :
++                (employee.getClass() == Worker.class) ? ((Worker) employee).toString() : ((ConstructForeman) employee).toString();
++        return "\n" + employeeToString;
++    }
++
++    ///Return a string with type, address and estimate cost of all the construction sites
++    public String printConstSiteWithCost() {
++        if (constructionSites.isEmpty()) return "E R R O R empty list of employees";
++        else {
++            StringBuilder stringConstructionSites = new StringBuilder();
++            for (int i = 0; i < constructionSites.size(); i++) {
++                ConstructionSite currentSite = constructionSites.get(i);
++                stringConstructionSites.append(i);
++                stringConstructionSites.append(". Type: ");
++                stringConstructionSites.append(currentSite.getClass().getSimpleName());
++                stringConstructionSites.append("\tAddress:");
++                stringConstructionSites.append(currentSite.getAddress());
++                stringConstructionSites.append("\tEstimate Cost:");
++                stringConstructionSites.append(currentSite.getEstimateProjectCost());
++                stringConstructionSites.append("\n");
++            }
++            return stringConstructionSites.toString();
++        }
++    }
++
+ }
+Index: src/com/utn/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn;\r\n\r\nimport com.utn.Persons.*;\r\nimport com.utn.Proyects.*;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.InputMismatchException;\r\nimport java.util.Scanner;\r\n\r\npublic class Main {\r\n\r\n    public static void main(String[] args) {\r\n        ArrayList<Employee> employees = new ArrayList<>();\r\n        ArrayList<ConstructionSite> constructionSites = new ArrayList<>();\r\n\r\n        Worker w1 = new Worker(\"Carl\", \"3022344\", 549556621, 32);\r\n        employees.add(w1);\r\n        Worker w2 = new Worker(\"Bob\", \"B556211\", 54921345, 25);\r\n        employees.add(w2);\r\n        Worker w3 = new Worker(\"Ana\", \"31355642\", 549121235, 60);\r\n        employees.add(w3);\r\n        Architect a1 = new Architect(\"Ismael\", \"339953778\", 549233446);\r\n        employees.add(a1);\r\n        Architect a2 = new Architect(\"Elvio\", \"249953778\", 549533446);\r\n        employees.add(a2);\r\n        ConstructForeman f1 = new ConstructForeman(\"Roberto\", \"B121223\", 54915469, 55);\r\n        employees.add(f1);\r\n        ConstructForeman f2 = new ConstructForeman(\"Marito\", \"A1212BB2\", 54955611, 21);\r\n        employees.add(f2);\r\n        ConstructForeman f3 = new ConstructForeman(\"Tony\", \"58442211\", 64512331, 56);\r\n        employees.add(f3);\r\n        ConstructForeman f4 = new ConstructForeman(\"Gonzalo\", \"D5441133\", 549599482, 31);\r\n        employees.add(f4);\r\n\r\n        System.out.println(\"f4 = \" + f4);\r\n        \r\n        Residential r1 = new Residential(\"Colon 5354\", 200, 200, 300,2);\r\n        constructionSites.add(r1);\r\n        Hotel h1 = new Hotel(\"Ritz\", \"las vegas 223\", 500, 300, 1500,2);\r\n        constructionSites.add(h1);\r\n        Comercial c1 = new Comercial(\"Drugstore\", \"Thailand 330\", 20, 100, 5000, \"7 eleven\");\r\n        constructionSites.add(c1);\r\n\r\n        Company com1 = new Company(\"UTN Real Estate Developments S.A.\");\r\n\r\n        Scanner scanner = new Scanner(System.in);\r\n        int op, op2;\r\n        Menu menu = new Menu();\r\n        do {\r\n            menu.printMenu2();\r\n            op = Integer.parseInt(scanner.next());\r\n            op2 = -1;\r\n            switch (op) {\r\n                case 1 -> {\r\n                    do {\r\n                        try {\r\n                            menu.printEmployees(employees);\r\n                            System.out.println(\"Select a employee for send to work:\");\r\n                            op2 = scanner.nextInt();\r\n                        } catch (InputMismatchException ime) {\r\n                            System.out.println(\"Warning! not a correct option. \");\r\n                            scanner.next();\r\n                        }\r\n                    } while (op2 < 0 || op2 > employees.size() - 1);\r\n                    menu.printWorkAnyEmployee(employees.get(op2));\r\n                }\r\n                case 2 -> {\r\n                    com1.setEmployees(employees);\r\n                    System.out.println(\"All the employees have been assign to the Company\");\r\n                }\r\n                case 3 -> {\r\n                    do {\r\n                        try {\r\n                            menu.printConstructionSites(constructionSites);\r\n                            System.out.println(\"Select a construction site to assign employees:\\n\");\r\n                            op2 = scanner.nextInt();\r\n                        } catch (InputMismatchException ime) {\r\n                            System.out.println(\"Warning! not a correct option. \");\r\n                            scanner.next();\r\n                        }\r\n                    } while (op2 < 0 || op2 > constructionSites.size() - 1);\r\n                    for (Employee emp : employees)\r\n                        System.out.println(constructionSites.get(op2).addNewEmployee(emp));\r\n                }\r\n                case 4 -> {\r\n                    com1.setConstructionSite(constructionSites);\r\n                    System.out.println(\"All the construction sites have been assign to the Company\");\r\n                }\r\n                case 5 -> {\r\n                    if (com1.getConstructionSites().isEmpty())\r\n                        System.out.println(\"E R R O R Company without construction sites\");\r\n                    else {\r\n                        do {\r\n                            try {\r\n                                menu.printConstructionSites(constructionSites);\r\n                                System.out.println(\"Select a construction site:\\n\");\r\n                                op2 = scanner.nextInt();\r\n                            } catch (InputMismatchException ime) {\r\n                                System.out.println(\"Warning! not a correct option. \");\r\n                                scanner.next();\r\n                            }\r\n                        } while (op2 < 0 || op2 > constructionSites.size() - 1);\r\n                        System.out.println(com1.getConstructionSite(op2).printEmployeesPerSite());\r\n                    }\r\n                }\r\n                case 6 -> System.out.println(com1.printConstructionSites());\r\n                case 0 -> System.out.println(\"Thanks for all. Have a good one!\");\r\n                default -> System.out.println(\"Not valid option\");\r\n            }\r\n        } while (op != 0);\r\n        scanner.close();\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/utn/Main.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Main.java	(date 1588026691844)
+@@ -1,6 +1,6 @@
+ package com.utn;
+ 
+-import com.utn.Persons.*;
++import com.utn.Employees.*;
+ import com.utn.Proyects.*;
+ 
+ import java.util.ArrayList;
+@@ -13,6 +13,7 @@
+         ArrayList<Employee> employees = new ArrayList<>();
+         ArrayList<ConstructionSite> constructionSites = new ArrayList<>();
+ 
++        ///Employees::
+         Worker w1 = new Worker("Carl", "3022344", 549556621, 32);
+         employees.add(w1);
+         Worker w2 = new Worker("Bob", "B556211", 54921345, 25);
+@@ -32,17 +33,20 @@
+         ConstructForeman f4 = new ConstructForeman("Gonzalo", "D5441133", 549599482, 31);
+         employees.add(f4);
+ 
+-        System.out.println("f4 = " + f4);
+-        
+-        Residential r1 = new Residential("Colon 5354", 200, 200, 300,2);
++        ///Construction Sites:
++        Residential r1 = new Residential("Colon 5354", 200, 200, 300, 2);
+         constructionSites.add(r1);
+-        Hotel h1 = new Hotel("Ritz", "las vegas 223", 500, 300, 1500,2);
++        Hotel h1 = new Hotel("Ritz", "las vegas 223", 500, 300, 1500, 2);
+         constructionSites.add(h1);
+         Comercial c1 = new Comercial("Drugstore", "Thailand 330", 20, 100, 5000, "7 eleven");
+         constructionSites.add(c1);
+ 
++        ///Company:
+         Company com1 = new Company("UTN Real Estate Developments S.A.");
+ 
++        ///All the employees have been assign to the Company
++        com1.setEmployees(employees);
++
+         Scanner scanner = new Scanner(System.in);
+         int op, op2;
+         Menu menu = new Menu();
+@@ -54,56 +58,65 @@
+                 case 1 -> {
+                     do {
+                         try {
+-                            menu.printEmployees(employees);
+-                            System.out.println("Select a employee for send to work:");
++                            System.out.println(com1.printEmployees());
++                            System.out.println("Insert the number of a employee for send to work:");
+                             op2 = scanner.nextInt();
+                         } catch (InputMismatchException ime) {
+-                            System.out.println("Warning! not a correct option. ");
++                            System.out.println("E R R O R! not a correct option. ");
+                             scanner.next();
+                         }
+                     } while (op2 < 0 || op2 > employees.size() - 1);
+-                    menu.printWorkAnyEmployee(employees.get(op2));
++                    System.out.println(com1.printWorkAnyEmployee(op2));
+                 }
+                 case 2 -> {
+-                    com1.setEmployees(employees);
+-                    System.out.println("All the employees have been assign to the Company");
++                    do {
++                        try {
++                            System.out.println(com1.printEmployees());
++                            System.out.println("Insert the number of the employee for more info:");
++                            op2 = scanner.nextInt();
++                        } catch (InputMismatchException ime) {
++                            System.out.println("E R R O R! not a correct option. ");
++                            scanner.next();
++                        }
++                    } while (op2 < 0 || op2 > employees.size() - 1);
++                    System.out.println(com1.printAnyEmployee(op2));
+                 }
+                 case 3 -> {
++                    com1.setConstructionSite(constructionSites);
++                    System.out.println("All the construction sites have been assign to the Company");
++                }
++                case 4 -> {
+                     do {
+                         try {
+-                            menu.printConstructionSites(constructionSites);
++                            System.out.println(com1.printConstructionSites());
+                             System.out.println("Select a construction site to assign employees:\n");
+                             op2 = scanner.nextInt();
+                         } catch (InputMismatchException ime) {
+-                            System.out.println("Warning! not a correct option. ");
++                            System.out.println("E R R O R! not a correct option. ");
+                             scanner.next();
+                         }
+                     } while (op2 < 0 || op2 > constructionSites.size() - 1);
+                     for (Employee emp : employees)
+                         System.out.println(constructionSites.get(op2).addNewEmployee(emp));
+                 }
+-                case 4 -> {
+-                    com1.setConstructionSite(constructionSites);
+-                    System.out.println("All the construction sites have been assign to the Company");
+-                }
+                 case 5 -> {
+                     if (com1.getConstructionSites().isEmpty())
+                         System.out.println("E R R O R Company without construction sites");
+                     else {
+                         do {
+                             try {
+-                                menu.printConstructionSites(constructionSites);
++                                System.out.println(com1.printConstructionSites());
+                                 System.out.println("Select a construction site:\n");
+                                 op2 = scanner.nextInt();
+                             } catch (InputMismatchException ime) {
+-                                System.out.println("Warning! not a correct option. ");
++                                System.out.println("E R R O R! not a correct option. ");
+                                 scanner.next();
+                             }
+                         } while (op2 < 0 || op2 > constructionSites.size() - 1);
+                         System.out.println(com1.getConstructionSite(op2).printEmployeesPerSite());
+                     }
+                 }
+-                case 6 -> System.out.println(com1.printConstructionSites());
++                case 6 -> System.out.println(com1.printConstructionSitesFull());
+                 case 0 -> System.out.println("Thanks for all. Have a good one!");
+                 default -> System.out.println("Not valid option");
+             }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"93b45473-1a7b-464f-b11c-d867f22769f9\" name=\"Default Changelist\" comment=\"\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1b30esXuVHyBLe134cmZlXc24Xo\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.utn.Main\" />\r\n      <module name=\"Romero Gonzalo - TP 1 - COM 4\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"file://$PROJECT_DIR$\" />\r\n      <RunnerSettings RunnerId=\"Run\" />\r\n      <ConfigurationWrapper RunnerId=\"Run\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"93b45473-1a7b-464f-b11c-d867f22769f9\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1587845567386</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1587845567386</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"WindowStateProjectService\">\r\n    <state x=\"568\" y=\"227\" key=\"#Notifications\" timestamp=\"1587918784990\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state x=\"568\" y=\"227\" key=\"#Notifications/0.0.1366.728@0.0.1366.728\" timestamp=\"1587918784990\" />\r\n    <state x=\"488\" y=\"48\" key=\"#com.intellij.ide.util.MemberChooser\" timestamp=\"1587941700532\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state x=\"488\" y=\"48\" key=\"#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728\" timestamp=\"1587941700532\" />\r\n    <state x=\"463\" y=\"119\" key=\"FileChooserDialogImpl\" timestamp=\"1587860316280\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state x=\"463\" y=\"119\" key=\"FileChooserDialogImpl/0.0.1366.728@0.0.1366.728\" timestamp=\"1587860316280\" />\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.bottom\" timestamp=\"1587946829250\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728\" timestamp=\"1587946829250\" />\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.center\" timestamp=\"1587946829250\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728\" timestamp=\"1587946829250\" />\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.left\" timestamp=\"1587946829250\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728\" timestamp=\"1587946829250\" />\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.right\" timestamp=\"1587946829250\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"216\" key=\"GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728\" timestamp=\"1587946829250\" />\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.bottom\" timestamp=\"1587945936548\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728\" timestamp=\"1587945936548\" />\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.center\" timestamp=\"1587945936548\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728\" timestamp=\"1587945936548\" />\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.left\" timestamp=\"1587945936548\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728\" timestamp=\"1587945936548\" />\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.right\" timestamp=\"1587945936548\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state width=\"1367\" height=\"222\" key=\"GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728\" timestamp=\"1587945936548\" />\r\n    <state x=\"339\" y=\"162\" key=\"run.anything.popup\" timestamp=\"1587943754988\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state x=\"339\" y=\"162\" key=\"run.anything.popup/0.0.1366.728@0.0.1366.728\" timestamp=\"1587943754988\" />\r\n    <state x=\"346\" y=\"49\" width=\"672\" height=\"678\" key=\"search.everywhere.popup\" timestamp=\"1587937552130\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state x=\"346\" y=\"49\" width=\"672\" height=\"678\" key=\"search.everywhere.popup/0.0.1366.728@0.0.1366.728\" timestamp=\"1587937552130\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-method\">\r\n          <url>file://$PROJECT_DIR$/src/com/utn/Proyects/ConstructionSite.java</url>\r\n          <line>102</line>\r\n          <properties class=\"com.utn.Proyects.ConstructionSite\" method=\"setEstimateProjectCost\">\r\n            <option name=\"EMULATED\" value=\"true\" />\r\n          </properties>\r\n          <option name=\"timeStamp\" value=\"16\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n    <watches-manager>\r\n      <configuration name=\"Application\">\r\n        <watch expression=\"costPerDay\" />\r\n      </configuration>\r\n    </watches-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ .idea/workspace.xml	(date 1588026691959)
+@@ -1,7 +1,28 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
+-    <list default="true" id="93b45473-1a7b-464f-b11c-d867f22769f9" name="Default Changelist" comment="" />
++    <list default="true" id="93b45473-1a7b-464f-b11c-d867f22769f9" name="Default Changelist" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Company.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Company.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Main.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Menu.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Architect.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/ConstructForeman.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Employee.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Work.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Worker.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Proyects/ConstructionSite.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Proyects/ConstructionSite.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Company.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Menu.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Persons/Architect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Employees/Architect.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Persons/ConstructForeman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Employees/ConstructForeman.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Persons/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Employees/Employee.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Persons/Work.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Employees/Work.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Persons/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Employees/Worker.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Proyects/Comercial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Proyects/Comercial.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/utn/Proyects/ConstructionSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/utn/Proyects/ConstructionSite.java" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -69,22 +90,22 @@
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+     <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1587860316280" />
+-    <state width="1367" height="216" key="GridCell.Tab.0.bottom" timestamp="1587946829250">
++    <state width="1367" height="216" key="GridCell.Tab.0.bottom" timestamp="1588026536354">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+-    <state width="1367" height="216" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587946829250" />
+-    <state width="1367" height="216" key="GridCell.Tab.0.center" timestamp="1587946829250">
++    <state width="1367" height="216" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1588026536354" />
++    <state width="1367" height="216" key="GridCell.Tab.0.center" timestamp="1588026536354">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+-    <state width="1367" height="216" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587946829250" />
+-    <state width="1367" height="216" key="GridCell.Tab.0.left" timestamp="1587946829250">
++    <state width="1367" height="216" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1588026536354" />
++    <state width="1367" height="216" key="GridCell.Tab.0.left" timestamp="1588026536353">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+-    <state width="1367" height="216" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587946829250" />
+-    <state width="1367" height="216" key="GridCell.Tab.0.right" timestamp="1587946829250">
++    <state width="1367" height="216" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1588026536353" />
++    <state width="1367" height="216" key="GridCell.Tab.0.right" timestamp="1588026536354">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+-    <state width="1367" height="216" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587946829250" />
++    <state width="1367" height="216" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1588026536354" />
+     <state width="1367" height="222" key="GridCell.Tab.1.bottom" timestamp="1587945936548">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+@@ -101,28 +122,20 @@
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+     <state width="1367" height="222" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1587945936548" />
+-    <state x="339" y="162" key="run.anything.popup" timestamp="1587943754988">
++    <state x="404" y="105" width="540" height="524" key="StructurePopup" timestamp="1588023739361">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1587943754988" />
+-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1587937552130">
++    <state x="404" y="105" width="540" height="524" key="StructurePopup/0.0.1366.728@0.0.1366.728" timestamp="1588023739361" />
++    <state x="339" y="162" key="run.anything.popup" timestamp="1588022642415">
+       <screen x="0" y="0" width="1366" height="728" />
+     </state>
+-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1587937552130" />
++    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1588022642415" />
++    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1588020048426">
++      <screen x="0" y="0" width="1366" height="728" />
++    </state>
++    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1588020048426" />
+   </component>
+   <component name="XDebuggerManager">
+-    <breakpoint-manager>
+-      <breakpoints>
+-        <line-breakpoint enabled="true" type="java-method">
+-          <url>file://$PROJECT_DIR$/src/com/utn/Proyects/ConstructionSite.java</url>
+-          <line>102</line>
+-          <properties class="com.utn.Proyects.ConstructionSite" method="setEstimateProjectCost">
+-            <option name="EMULATED" value="true" />
+-          </properties>
+-          <option name="timeStamp" value="16" />
+-        </line-breakpoint>
+-      </breakpoints>
+-    </breakpoint-manager>
+     <watches-manager>
+       <configuration name="Application">
+         <watch expression="costPerDay" />
+Index: src/com/utn/Proyects/Comercial.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Proyects;\r\n\r\npublic class Comercial extends ConstructionSite {\r\n    private String typeOfBusiness;\r\n    protected String name;\r\n\r\n    public Comercial(String typeOfBusiness,String address, double sizeOnMt2, int estimateProjectTime, double costPerMt2, String name) {\r\n        super(address, sizeOnMt2, estimateProjectTime, costPerMt2);\r\n        this.typeOfBusiness = typeOfBusiness;\r\n        this.name = name;\r\n    }\r\n\r\n    ///Constructors overload\r\n    public Comercial(String name,String address, double sizeOnMt2, int estimateProjectTime, double costPerMt2) {\r\n        super(address, sizeOnMt2, estimateProjectTime, costPerMt2);\r\n        this.name = name;\r\n    }\r\n\r\n    ///Setters and Getters\r\n    public String getTypeOfBusiness() {\r\n        return typeOfBusiness;\r\n    }\r\n\r\n    public void setTypeOfBusiness(String typeOfBusiness) {\r\n        this.typeOfBusiness = typeOfBusiness;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    ///to String method\r\n    public String toString() {\r\n        return super.toString()+\", Name Site =\"+name+\r\n                \", Type of Business =\"+typeOfBusiness;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/utn/Proyects/Comercial.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Proyects/Comercial.java	(date 1588026365890)
+@@ -10,7 +10,7 @@
+         this.name = name;
+     }
+ 
+-    ///Constructors overload
++    ///Constructor overload for Hotel class
+     public Comercial(String name,String address, double sizeOnMt2, int estimateProjectTime, double costPerMt2) {
+         super(address, sizeOnMt2, estimateProjectTime, costPerMt2);
+         this.name = name;
+Index: src/com/utn/Proyects/ConstructionSite.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Proyects;\r\n\r\nimport com.utn.Persons.Architect;\r\nimport com.utn.Persons.ConstructForeman;\r\nimport com.utn.Persons.Employee;\r\nimport java.util.ArrayList;\r\n\r\n\r\npublic class ConstructionSite {\r\n    protected String address;\r\n    protected double sizeOnMt2;\r\n    protected int estimateProjectTime;\r\n    protected double costPerMt2;\r\n    protected ArrayList<Employee> employees;\r\n    protected double estimateProjectCost;\r\n\r\n    public ConstructionSite(String address, double sizeOnMt2, int estimateProjectTime, double costPerMt2) {\r\n        this.address = address;\r\n        this.sizeOnMt2 = sizeOnMt2;\r\n        this.estimateProjectTime = estimateProjectTime;\r\n        this.costPerMt2 = costPerMt2;\r\n        employees = new ArrayList<>();\r\n    }\r\n\r\n    ///Setters and Getters\r\n    public String getAddress() {\r\n        return address;\r\n    }\r\n\r\n    public void setAddress(String address) {\r\n        this.address = address;\r\n    }\r\n\r\n    public double getSizeOnMt2() {\r\n        return sizeOnMt2;\r\n    }\r\n\r\n    public void setSizeOnMt2(double sizeOnMt2) {\r\n        this.sizeOnMt2 = sizeOnMt2;\r\n    }\r\n\r\n    public int getEstimateProjectTime() {\r\n        return estimateProjectTime;\r\n    }\r\n\r\n    public void setEstimateProjectTime(int estimateProjectTime) {\r\n        this.estimateProjectTime = estimateProjectTime;\r\n    }\r\n\r\n    public double getCostPerMt2() {\r\n        return costPerMt2;\r\n    }\r\n\r\n    public void setCostPerMt2(double costPerMt2) {\r\n        this.costPerMt2 = costPerMt2;\r\n    }\r\n\r\n    public double getEstimateProjectCost() {\r\n        this.setEstimateProjectCost(); return estimateProjectCost;\r\n    }\r\n\r\n    public ArrayList<Employee> getEmployees() {return employees; }\r\n    ////\r\n\r\n    ///Try to add NEW employee in the list of employees\r\n    private int tryAddNewEmployee(Employee employee) {\r\n        if (!employees.isEmpty()) {\r\n            int countConstructForeman = 0;\r\n            /// Traverse the list count\r\n            for (Employee emp : employees) {\r\n                if (emp.getClass() == Architect.class && Architect.class == employee.getClass()) { ///Only One Architect per Construction Site\r\n                    return 1;                                           ///Return E R R O R\r\n                }\r\n                else if (emp.getClass() == ConstructForeman.class && employee.getClass() == emp.getClass()) {\r\n                    if (countConstructForeman < 2) {                     ///Max of 3 construct foreman per Construction Site\r\n                        ++countConstructForeman;                         ///less than the max? increase the counter\r\n                    } else return 2;                                    ///more than 3? Return E R R O R\r\n                }\r\n            }\r\n        }\r\n        employees.add(employee);                                      ///All good? add the employee\r\n        return 0;\r\n    }\r\n\r\n    public String addNewEmployee(Employee employee) {\r\n        int flag = tryAddNewEmployee(employee);\r\n        String message = \"\\0\";\r\n        switch (flag) {\r\n            case 1 -> message = \"There may be only one Architect per Construction Site.\";\r\n            case 2 -> message = \"There may be a maximum of three Construct Foreman per Construction Site.\";\r\n            case 0 -> message = \"Successful\";\r\n        }\r\n        return message;\r\n    }\r\n\r\n    ///Get site surface cost\r\n    public double getSiteSurfaceCost() {\r\n        return this.costPerMt2 * this.sizeOnMt2;                ///I prefer to use \"this.\" so I can know straight away\r\n                                                                ///when is a inner attribute.\r\n    }\r\n\r\n    ///Set Estimate Project Cost\r\n    public void setEstimateProjectCost() {\r\n        double empPerDayCost = 0;\r\n        ///Use employee to traverse all the employees list and calculate the cost/day for each employee\r\n        for (Employee employee : employees) {\r\n            double costPerDay=employee.getCostPerDay();\r\n            empPerDayCost += costPerDay * estimateProjectTime;\r\n        }\r\n        ///Get cost of the total surface and sum to the total of employees per day cost\r\n        estimateProjectCost = empPerDayCost + getSiteSurfaceCost();\r\n    }\r\n\r\n\r\n    public String printEmployeesPerSite() {\r\n        if (employees == null) {\r\n            return \"E R R O R construction site not exist.\";\r\n        } else if (employees.isEmpty()) {\r\n            return \"No employees added to the site\";\r\n        } else {\r\n            StringBuilder stringOfEmployees = new StringBuilder();\r\n            for (Employee employee : employees) {\r\n                stringOfEmployees.append(employee.getClass().getSimpleName());\r\n                stringOfEmployees.append(\"\\tname: \");\r\n                stringOfEmployees.append(employee.getName());\r\n                stringOfEmployees.append(\"  dni: \");\r\n                stringOfEmployees.append(employee.getDni());\r\n                stringOfEmployees.append(\"\\n\");\r\n            }\r\n            return \"Employees for the \" + this.getClass().getSimpleName() + \":\\n\" + stringOfEmployees.toString();\r\n        }\r\n    }\r\n\r\n    ///to String method\r\n    public String toString() {\r\n        return \"\\nConstruction Site:\" +\r\n                \", Type = \" + getClass().getSimpleName() +\r\n                \", Address =\" + address +\", Estimate Project Cost =$\" + getEstimateProjectCost()+\r\n                \", Size =\" + sizeOnMt2 + \"mt2\" +\r\n                \", Estimate Project Time = \" + estimateProjectTime + \"days\" +\r\n                \", Cost per mt2 =$\" + costPerMt2;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/utn/Proyects/ConstructionSite.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Proyects/ConstructionSite.java	(date 1588026365905)
+@@ -1,8 +1,8 @@
+ package com.utn.Proyects;
+ 
+-import com.utn.Persons.Architect;
+-import com.utn.Persons.ConstructForeman;
+-import com.utn.Persons.Employee;
++import com.utn.Employees.Architect;
++import com.utn.Employees.ConstructForeman;
++import com.utn.Employees.Employee;
+ import java.util.ArrayList;
+ 
+ 
+@@ -111,7 +111,7 @@
+         estimateProjectCost = empPerDayCost + getSiteSurfaceCost();
+     }
+ 
+-
++    ///Print all the employees from the current site
+     public String printEmployeesPerSite() {
+         if (employees == null) {
+             return "E R R O R construction site not exist.";
+Index: src/com/utn/Persons/ConstructForeman.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Persons;\r\n\r\npublic class ConstructForeman extends Employee implements Work {\r\n    protected int age;\r\n\r\n    public ConstructForeman(String name, String dni, int phone, int age) {\r\n        super(name, dni, phone);\r\n        super.costPerDay = employeeCost();\r\n        this.age = age;\r\n    }\r\n\r\n    public double employeeCost() {\r\n        return 1800.00;\r\n    }\r\n\r\n    ///Message from the Construct Foreman when is working\r\n    public String work() {\r\n        return \"I'm a construction foreman and I'm supervising the construction\";\r\n    }\r\n\r\n    ///Interface getter and setter\r\n    public int getAge() {\r\n        return age;\r\n    }\r\n\r\n    public void setAge(int age) {\r\n        this.age = age;\r\n    }\r\n\r\n    ///to String method\r\n    public String toString() {\r\n        return super.toString() + \", age = \" + age;\r\n    }\r\n}\r\n
+===================================================================
+--- src/com/utn/Persons/ConstructForeman.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Employees/ConstructForeman.java	(date 1588026021978)
+@@ -1,4 +1,4 @@
+-package com.utn.Persons;
++package com.utn.Employees;
+ 
+ public class ConstructForeman extends Employee implements Work {
+     protected int age;
+@@ -9,15 +9,6 @@
+         this.age = age;
+     }
+ 
+-    public double employeeCost() {
+-        return 1800.00;
+-    }
+-
+-    ///Message from the Construct Foreman when is working
+-    public String work() {
+-        return "I'm a construction foreman and I'm supervising the construction";
+-    }
+-
+     ///Interface getter and setter
+     public int getAge() {
+         return age;
+@@ -27,6 +18,15 @@
+         this.age = age;
+     }
+ 
++    public double employeeCost() {
++        return 1800.00;
++    }
++
++    ///Message from the Construct Foreman when is working
++    public String work() {
++        return "I'm a construction foreman and I'm supervising the construction";
++    }
++
+     ///to String method
+     public String toString() {
+         return super.toString() + ", age = " + age;
+Index: src/com/utn/Persons/Work.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Persons;\r\n\r\npublic interface Work {\r\n    String work();\r\n\r\n    int getAge();\r\n\r\n    void setAge(int age);\r\n}\r\n
+===================================================================
+--- src/com/utn/Persons/Work.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Employees/Work.java	(date 1588026021993)
+@@ -1,4 +1,4 @@
+-package com.utn.Persons;
++package com.utn.Employees;
+ 
+ public interface Work {
+     String work();
+Index: src/com/utn/Menu.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn;\r\n\r\nimport com.utn.Persons.*;\r\nimport com.utn.Proyects.*;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class Menu {\r\n\r\n\r\n    public Menu() {\r\n    }\r\n\r\n    public void PrintHeader(String cabecera) {\r\n        int i;\r\n        System.out.print(\"\\u25fc\");\r\n        for (i = 0; i < cabecera.length(); i++) {\r\n            System.out.print(\"\\u25fc\");\r\n        }\r\n        System.out.print(\"\\u25fc\\n\");\r\n        System.out.printf(\"%s%25s%5s\\n\", \"\\u25fc\", cabecera, \"\\u25fc\");\r\n        System.out.print(\"\\u25fc\");\r\n        for (i = 0; i < cabecera.length(); i++) {\r\n            System.out.print(\"\\u25fc\");\r\n        }\r\n        System.out.print(\"\\u25fc\");\r\n    }\r\n\r\n    public void printMenu1() {\r\n        this.PrintHeader(\"CONSTRUCTION SOFTWARE\");\r\n        System.out.println(\"\\n1. Create employee\");\r\n        System.out.println(\"2. Create construction site\");\r\n        System.out.println(\"3. Create company\");\r\n        System.out.println(\"0. Exit\");\r\n    }\r\n\r\n    public void printMenu2() {\r\n        this.PrintHeader(\"CONSTRUCTION SOFTWARE\");\r\n        System.out.println(\"\\n1. Send employees to work\");\r\n        System.out.println(\"2. Assign employees to the Company\");\r\n        System.out.println(\"3. Assign employees in to the Construction Site\");\r\n        System.out.println(\"4. Assign Construction Site to Company\");\r\n        System.out.println(\"5. Show employees form a Site\");\r\n        System.out.println(\"6. Print all the construction sites of the Company\");\r\n        System.out.println(\"0. Exit\");\r\n    }\r\n\r\n    public void printEmployees(ArrayList<Employee> employees) {\r\n        if (employees.isEmpty()) System.out.println(\"E R R O R empty list of employees\");\r\n        else {\r\n            for (int i = 0; i < employees.size(); i++) {\r\n                Employee employee = employees.get(i);\r\n                System.out.println(i + \". Rol:\" + employee.getClass().getSimpleName() + \" Name:\" + employee.getName());\r\n            }\r\n        }\r\n    }\r\n\r\n    public void printWorkAnyEmployee(Employee employee) {\r\n        String work = (employee.getClass() == Architect.class) ? ((Architect) employee).createDrawing() :\r\n                (employee.getClass() == Worker.class) ? ((Worker) employee).work() : ((ConstructForeman) employee).work();\r\n        System.out.println(\"\\n\" + work);\r\n    }\r\n\r\n    public void printConstructionSites(ArrayList<ConstructionSite> constructionSites) {\r\n        if (constructionSites.isEmpty()) System.out.println(\"E R R O R empty list of employees\");\r\n        else {\r\n            for (int i = 0; i < constructionSites.size(); i++) {\r\n                ConstructionSite currentSite = constructionSites.get(i);\r\n                System.out.println(i + \". Type:\" + currentSite.getClass().getSimpleName() + \" Address:\" + currentSite.getAddress() + \"\\n\");\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    /*\r\n    public void printMenuEmployee() {\r\n        this.imprimirCabecera(\"CONSTRUCTION SOFTWARE\");\r\n        System.out.println(\"\\n1. Create Architect\");\r\n        System.out.println(\"2. Create Worker\");\r\n        System.out.println(\"3. Create Construct Foreman\");\r\n        System.out.println(\"0. Return\");\r\n    }\r\n\r\n    public void printMenuConstSite() {\r\n        this.imprimirCabecera(\"CONSTRUCTION SOFTWARE\");\r\n        System.out.println(\"\\n1. Create Residential site \");\r\n        System.out.println(\"2. Create Commercial site\");\r\n        System.out.println(\"3. Create Hotel site\");\r\n        System.out.println(\"0. Return\");\r\n    }\r\n\r\n    public void printSubMenuEmployee() {\r\n        this.imprimirCabecera(\"CONSTRUCTION SOFTWARE\");\r\n        System.out.println(\"\\n1. Employee Info \");\r\n        System.out.println(\"2. Send to work\");\r\n        System.out.println(\"0. Return\");\r\n    }\r\n\r\n    public void printSubMenuConstSite() {\r\n        System.out.println(\"\\n1. Construction site Info\");\r\n        System.out.println(\"2. Assign employees\");\r\n        System.out.println(\"3. Estimated cost of the project\");\r\n        System.out.println(\"4. Employees assigned\");\r\n        System.out.println(\"0. Return\");\r\n    }\r\n\r\n    public void printMenuCompany() {\r\n        this.imprimirCabecera(\"CONSTRUCTION SOFTWARE\");\r\n        System.out.println(\"\\n1. Company Info\");\r\n        System.out.println(\"2. Construction Sites\");\r\n        System.out.println(\"3. Employees\");\r\n        System.out.println(\"0. Return\");\r\n    }\r\n\r\n    public void menuEmployee() {\r\n        Scanner scanner = new Scanner(System.in);\r\n        this.printMenuEmployee();\r\n        int op = Integer.parseInt(scanner.next());\r\n        switch (op) {\r\n            case 1 -> {\r\n                Architect a1 = new Architect(\"Ismael\", \"339953778\", 549233446);\r\n\r\n                this.SubMenuEmployee(a1);\r\n            }\r\n            case 2 -> {\r\n                Worker w1 = new Worker(\"Carl\", \"3022344\", 549556621, 32);\r\n                this.SubMenuEmployee(w1);\r\n            }\r\n            case 3 -> {\r\n                ConstructForeman f1 = new ConstructForeman(\"Roberto\", \"B121223\", 54915469, 55);\r\n                this.SubMenuEmployee(f1);\r\n            }\r\n            default -> System.out.println(\"Not a valid option\");\r\n        }\r\n    }\r\n\r\n    public void SubMenuEmployee(Employee employee) {\r\n        Scanner scanner = new Scanner(System.in);\r\n        int op;\r\n        do {\r\n            this.printSubMenuEmployee();\r\n            op = Integer.parseInt(scanner.next());\r\n            switch (op) {\r\n                case 1 -> {\r\n                    String info = (employee.getClass() == Architect.class) ?\r\n                            ((Architect) employee).toString() : ((Worker) employee).toString();\r\n                    System.out.println(info);\r\n                }\r\n                case 2 -> {\r\n                    String work = (employee.getClass() == Architect.class) ? ((Architect) employee).createDrawing() :\r\n                            (employee.getClass() == Worker.class) ? ((Worker) employee).work() : ((ConstructForeman) employee).work();\r\n                    System.out.println(work);\r\n                }\r\n                default -> System.out.println(\"Not a valid option\");\r\n            }\r\n        } while (op != 0);\r\n    }\r\n\r\n    public void menuConstructionSite() {\r\n        Scanner scanner = new Scanner(System.in);\r\n        this.printMenuConstSite();\r\n        int op = Integer.parseInt(scanner.next());\r\n        switch (op) {\r\n            case 1 -> {\r\n                Residential r1 = new Residential(\"Colon 5354\", 200, 1500, 50000, 2);\r\n                this.SubMenuConstSite(r1);\r\n            }\r\n            case 2 -> {\r\n                Hotel h1 = new Hotel(\"Ritz\", \"las vegas 223\", 500, 2000, 150000, 4);\r\n                this.SubMenuConstSite(h1);\r\n            }\r\n            case 3 -> {\r\n                Comercial c1 = new Comercial(\"Drugstore\", \"Thailand 330\", 20, 350, 200000, \"7 eleven\");\r\n                this.SubMenuConstSite(c1);\r\n            }\r\n            default -> System.out.println(\"Not a valid option\");\r\n        }\r\n    }\r\n\r\n    public void SubMenuConstSite(ConstructionSite constSite) {\r\n        Scanner scanner = new Scanner(System.in);\r\n        int op;\r\n        do {\r\n            this.printSubMenuConstSite();\r\n            op = Integer.parseInt(scanner.next());\r\n            switch (op) {\r\n                case 1 -> {\r\n                    String info = (constSite.getClass() == Residential.class) ? ((Residential) constSite).toString() :\r\n                            (constSite.getClass() == Comercial.class) ? ((Comercial) constSite).toString() : ((Hotel) constSite).toString();\r\n                    System.out.println(info);\r\n                }\r\n                case 2 -> {\r\n\r\n                }\r\n\r\n                default -> System.out.println(\"Not a valid option\");\r\n            }\r\n        } while (op != 0);\r\n    }*/\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/utn/Menu.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Menu.java	(date 1588025439771)
+@@ -1,10 +1,5 @@
+ package com.utn;
+ 
+-import com.utn.Persons.*;
+-import com.utn.Proyects.*;
+-
+-import java.util.ArrayList;
+-
+ public class Menu {
+ 
+ 
+@@ -26,181 +21,14 @@
+         System.out.print("\u25fc");
+     }
+ 
+-    public void printMenu1() {
+-        this.PrintHeader("CONSTRUCTION SOFTWARE");
+-        System.out.println("\n1. Create employee");
+-        System.out.println("2. Create construction site");
+-        System.out.println("3. Create company");
+-        System.out.println("0. Exit");
+-    }
+-
+     public void printMenu2() {
+         this.PrintHeader("CONSTRUCTION SOFTWARE");
+         System.out.println("\n1. Send employees to work");
+-        System.out.println("2. Assign employees to the Company");
+-        System.out.println("3. Assign employees in to the Construction Site");
+-        System.out.println("4. Assign Construction Site to Company");
++        System.out.println("2. Employees details");
++        System.out.println("3. Assign Construction Site to Company");
++        System.out.println("4. Assign employees in to the Construction Site");
+         System.out.println("5. Show employees form a Site");
+         System.out.println("6. Print all the construction sites of the Company");
+         System.out.println("0. Exit");
+     }
+-
+-    public void printEmployees(ArrayList<Employee> employees) {
+-        if (employees.isEmpty()) System.out.println("E R R O R empty list of employees");
+-        else {
+-            for (int i = 0; i < employees.size(); i++) {
+-                Employee employee = employees.get(i);
+-                System.out.println(i + ". Rol:" + employee.getClass().getSimpleName() + " Name:" + employee.getName());
+-            }
+-        }
+-    }
+-
+-    public void printWorkAnyEmployee(Employee employee) {
+-        String work = (employee.getClass() == Architect.class) ? ((Architect) employee).createDrawing() :
+-                (employee.getClass() == Worker.class) ? ((Worker) employee).work() : ((ConstructForeman) employee).work();
+-        System.out.println("\n" + work);
+-    }
+-
+-    public void printConstructionSites(ArrayList<ConstructionSite> constructionSites) {
+-        if (constructionSites.isEmpty()) System.out.println("E R R O R empty list of employees");
+-        else {
+-            for (int i = 0; i < constructionSites.size(); i++) {
+-                ConstructionSite currentSite = constructionSites.get(i);
+-                System.out.println(i + ". Type:" + currentSite.getClass().getSimpleName() + " Address:" + currentSite.getAddress() + "\n");
+-            }
+-        }
+-    }
+-
+-
+-
+-
+-
+-
+-
+-
+-    /*
+-    public void printMenuEmployee() {
+-        this.imprimirCabecera("CONSTRUCTION SOFTWARE");
+-        System.out.println("\n1. Create Architect");
+-        System.out.println("2. Create Worker");
+-        System.out.println("3. Create Construct Foreman");
+-        System.out.println("0. Return");
+-    }
+-
+-    public void printMenuConstSite() {
+-        this.imprimirCabecera("CONSTRUCTION SOFTWARE");
+-        System.out.println("\n1. Create Residential site ");
+-        System.out.println("2. Create Commercial site");
+-        System.out.println("3. Create Hotel site");
+-        System.out.println("0. Return");
+-    }
+-
+-    public void printSubMenuEmployee() {
+-        this.imprimirCabecera("CONSTRUCTION SOFTWARE");
+-        System.out.println("\n1. Employee Info ");
+-        System.out.println("2. Send to work");
+-        System.out.println("0. Return");
+-    }
+-
+-    public void printSubMenuConstSite() {
+-        System.out.println("\n1. Construction site Info");
+-        System.out.println("2. Assign employees");
+-        System.out.println("3. Estimated cost of the project");
+-        System.out.println("4. Employees assigned");
+-        System.out.println("0. Return");
+-    }
+-
+-    public void printMenuCompany() {
+-        this.imprimirCabecera("CONSTRUCTION SOFTWARE");
+-        System.out.println("\n1. Company Info");
+-        System.out.println("2. Construction Sites");
+-        System.out.println("3. Employees");
+-        System.out.println("0. Return");
+-    }
+-
+-    public void menuEmployee() {
+-        Scanner scanner = new Scanner(System.in);
+-        this.printMenuEmployee();
+-        int op = Integer.parseInt(scanner.next());
+-        switch (op) {
+-            case 1 -> {
+-                Architect a1 = new Architect("Ismael", "339953778", 549233446);
+-
+-                this.SubMenuEmployee(a1);
+-            }
+-            case 2 -> {
+-                Worker w1 = new Worker("Carl", "3022344", 549556621, 32);
+-                this.SubMenuEmployee(w1);
+-            }
+-            case 3 -> {
+-                ConstructForeman f1 = new ConstructForeman("Roberto", "B121223", 54915469, 55);
+-                this.SubMenuEmployee(f1);
+-            }
+-            default -> System.out.println("Not a valid option");
+-        }
+-    }
+-
+-    public void SubMenuEmployee(Employee employee) {
+-        Scanner scanner = new Scanner(System.in);
+-        int op;
+-        do {
+-            this.printSubMenuEmployee();
+-            op = Integer.parseInt(scanner.next());
+-            switch (op) {
+-                case 1 -> {
+-                    String info = (employee.getClass() == Architect.class) ?
+-                            ((Architect) employee).toString() : ((Worker) employee).toString();
+-                    System.out.println(info);
+-                }
+-                case 2 -> {
+-                    String work = (employee.getClass() == Architect.class) ? ((Architect) employee).createDrawing() :
+-                            (employee.getClass() == Worker.class) ? ((Worker) employee).work() : ((ConstructForeman) employee).work();
+-                    System.out.println(work);
+-                }
+-                default -> System.out.println("Not a valid option");
+-            }
+-        } while (op != 0);
+-    }
+-
+-    public void menuConstructionSite() {
+-        Scanner scanner = new Scanner(System.in);
+-        this.printMenuConstSite();
+-        int op = Integer.parseInt(scanner.next());
+-        switch (op) {
+-            case 1 -> {
+-                Residential r1 = new Residential("Colon 5354", 200, 1500, 50000, 2);
+-                this.SubMenuConstSite(r1);
+-            }
+-            case 2 -> {
+-                Hotel h1 = new Hotel("Ritz", "las vegas 223", 500, 2000, 150000, 4);
+-                this.SubMenuConstSite(h1);
+-            }
+-            case 3 -> {
+-                Comercial c1 = new Comercial("Drugstore", "Thailand 330", 20, 350, 200000, "7 eleven");
+-                this.SubMenuConstSite(c1);
+-            }
+-            default -> System.out.println("Not a valid option");
+-        }
+-    }
+-
+-    public void SubMenuConstSite(ConstructionSite constSite) {
+-        Scanner scanner = new Scanner(System.in);
+-        int op;
+-        do {
+-            this.printSubMenuConstSite();
+-            op = Integer.parseInt(scanner.next());
+-            switch (op) {
+-                case 1 -> {
+-                    String info = (constSite.getClass() == Residential.class) ? ((Residential) constSite).toString() :
+-                            (constSite.getClass() == Comercial.class) ? ((Comercial) constSite).toString() : ((Hotel) constSite).toString();
+-                    System.out.println(info);
+-                }
+-                case 2 -> {
+-
+-                }
+-
+-                default -> System.out.println("Not a valid option");
+-            }
+-        } while (op != 0);
+-    }*/
+ }
+\ No newline at end of file
+Index: src/com/utn/Persons/Worker.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Persons;\r\n\r\npublic class Worker extends ConstructForeman implements Work {\r\n\r\n    public Worker(String name, String dni, int phone, int age) {\r\n        super(name, dni, phone, age);\r\n        super.costPerDay = employeeCost();\r\n    }\r\n\r\n    public double employeeCost() { return 1500.00; }\r\n\r\n    ///Message from the Worker when is working\r\n    public String work() {\r\n        return \"I'm a worker and I build\";\r\n    }\r\n\r\n    ///to String method\r\n    public int getAge() {\r\n        return age;\r\n    }\r\n\r\n    public void setAge(int age) {\r\n        this.age = age;\r\n    }\r\n\r\n}\r\n
+===================================================================
+--- src/com/utn/Persons/Worker.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Employees/Worker.java	(date 1588026051564)
+@@ -1,4 +1,4 @@
+-package com.utn.Persons;
++package com.utn.Employees;
+ 
+ public class Worker extends ConstructForeman implements Work {
+ 
+@@ -14,7 +14,7 @@
+         return "I'm a worker and I build";
+     }
+ 
+-    ///to String method
++    ///Setter and Getter
+     public int getAge() {
+         return age;
+     }
+Index: src/com/utn/Persons/Employee.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Persons;\r\n\r\npublic abstract class Employee {\r\n    protected String name;\r\n    protected String dni;\r\n    protected int phone;\r\n    protected double costPerDay;\r\n\r\n    public Employee() {\r\n        super();\r\n    }\r\n\r\n    public Employee(String name, String dni, int phone) {\r\n        this.dni = dni;\r\n        this.phone = phone;\r\n        this.name = name;\r\n    }\r\n\r\n    ///Setters and Getters\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getDni() {\r\n        return dni;\r\n    }\r\n\r\n    public void setDni(String dni) {\r\n        this.dni = dni;\r\n    }\r\n\r\n    public int getPhone() {\r\n        return phone;\r\n    }\r\n\r\n    public void setPhone(int phone) {\r\n        this.phone = phone;\r\n    }\r\n\r\n    public void setCostPerDay(double costPerDay) {\r\n        this.costPerDay = costPerDay;\r\n    }\r\n\r\n    public double getCostPerDay() {\r\n        return costPerDay;\r\n    }\r\n\r\n    ///Depending on the type of employee the cost per day\r\n    public abstract double employeeCost();\r\n\r\n    ///to String method\r\n    public String toString() {\r\n        return \"Employee:\" +\r\n                \" rol = \" + getClass().getSimpleName() +\r\n                \", name = \" + name +\r\n                \", dni = \" + dni +\r\n                \", phone = \" + phone +\r\n                \", costPerDay = $\" + costPerDay;\r\n    }\r\n\r\n}\r\n
+===================================================================
+--- src/com/utn/Persons/Employee.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Employees/Employee.java	(date 1588026022009)
+@@ -1,4 +1,4 @@
+-package com.utn.Persons;
++package com.utn.Employees;
+ 
+ public abstract class Employee {
+     protected String name;
+@@ -6,9 +6,7 @@
+     protected int phone;
+     protected double costPerDay;
+ 
+-    public Employee() {
+-        super();
+-    }
++    public Employee() {}
+ 
+     public Employee(String name, String dni, int phone) {
+         this.dni = dni;
+@@ -48,6 +46,8 @@
+     public double getCostPerDay() {
+         return costPerDay;
+     }
++    ///
++
+ 
+     ///Depending on the type of employee the cost per day
+     public abstract double employeeCost();
+Index: src/com/utn/Persons/Architect.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.utn.Persons;\r\n\r\nimport java.util.UUID;\r\n\r\npublic class Architect extends Employee {\r\n    private String registrationNumber;\r\n\r\n    public Architect(String name, String dni, int phone) {\r\n        super(name, dni, phone);\r\n        super.costPerDay = employeeCost();\r\n        this.registrationNumber = UUID.randomUUID().toString().replace(\"-\", \"\").substring(0, 10);\r\n        //Get a random UUID , transform it to String, reduce it to 5 character long\r\n        //and replace the \" - \" symbol in order to get a clean alphanumeric ID\r\n    }\r\n\r\n    public double employeeCost() {\r\n        return 2000.00;\r\n    }\r\n\r\n    ///Setters and Getters\r\n    public String getRegistrationNumber() {\r\n        return registrationNumber;\r\n    }\r\n\r\n    ///Message from the Architect\r\n    public String createDrawing() {\r\n        return \"I am an Architect and I'm creating my next drawing\";\r\n    }\r\n\r\n    //toString method\r\n    public String toString() {\r\n        return super.toString() + \", registration number = \" + registrationNumber;\r\n    }\r\n}\r\n
+===================================================================
+--- src/com/utn/Persons/Architect.java	(revision d5cadd67aba30fc6fb4f8946eefdb57ab169d8f4)
++++ src/com/utn/Employees/Architect.java	(date 1588026021946)
+@@ -1,9 +1,9 @@
+-package com.utn.Persons;
++package com.utn.Employees;
+ 
+ import java.util.UUID;
+ 
+ public class Architect extends Employee {
+-    private String registrationNumber;
++    private final String registrationNumber;
+ 
+     public Architect(String name, String dni, int phone) {
+         super(name, dni, phone);
+@@ -13,15 +13,16 @@
+         //and replace the " - " symbol in order to get a clean alphanumeric ID
+     }
+ 
+-    public double employeeCost() {
+-        return 2000.00;
+-    }
+-
+     ///Setters and Getters
+     public String getRegistrationNumber() {
+         return registrationNumber;
+     }
+ 
++    ///Set Employee Cost
++    public double employeeCost() {
++        return 2000.00;
++    }
++
+     ///Message from the Architect
+     public String createDrawing() {
+         return "I am an Architect and I'm creating my next drawing";

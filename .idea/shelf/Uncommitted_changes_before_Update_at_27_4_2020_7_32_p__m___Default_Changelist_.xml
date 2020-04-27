@@ -1,0 +1,49 @@
+<changelist name="Uncommitted_changes_before_Update_at_27_4_2020_7_32_p__m__[Default_Changelist]" date="1588026748330" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_4_2020_7_32_p__m__[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 27/4/2020 7:32 p. m. [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Worker.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Proyects/ConstructionSite.class" />
+    <option name="AFTER_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Proyects/ConstructionSite.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_4_2020_7_32_p__m__[Default_Changelist]/ConstructionSite.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Architect.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/ConstructForeman.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Work.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Main.class" />
+    <option name="AFTER_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Main.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_4_2020_7_32_p__m__[Default_Changelist]/Main.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Persons/Employee.class" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Menu.class" />
+    <option name="AFTER_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Menu.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_4_2020_7_32_p__m__[Default_Changelist]/Menu.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Company.class" />
+    <option name="AFTER_PATH" value="out/production/Romero Gonzalo - TP 1 - COM 4/com/utn/Company.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_4_2020_7_32_p__m__[Default_Changelist]/Company.class" />
+  </binary>
+</changelist>
