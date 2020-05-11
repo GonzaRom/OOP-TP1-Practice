@@ -9,15 +9,6 @@ public class Residential extends ConstructionSite {
         this.numberOfRooms = numberOfRooms;
     }
 
-    ///Setter and Getter
-    public int getNumberOfRooms() {
-        return numberOfRooms;
-    }
-
-    public void setNumberOfRooms(int numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
-    }
-
     ///to String Method
     public String toString() {
         return super.toString() + ", Number of floors =" + numberOfRooms;

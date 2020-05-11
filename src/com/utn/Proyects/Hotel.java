@@ -8,25 +8,12 @@ public class Hotel extends Comercial {
         this.numberOfFloors = numberOfFloors;
     }
 
-    ///Setter and Getter
-    public int getNumberOfFloors() {
-        return numberOfFloors;
-    }
-
-    public void setNumberOfFloors(int numberOfFloors) {
-        this.numberOfFloors = numberOfFloors;
-    }
-
     ///to String method
     public String toString() {
-        return "\nConstruction Site:" +
-                ", Type = " + getClass().getSimpleName() +
+        return "\nType = " + getClass().getSimpleName() +
                 ", Address =" + address +
-                ", Estimate Project Cost =$" + estimateProjectCost +
-                ", Size =" + sizeOnMt2 + "mt2" +
-                ", Estimate Project Time = " + estimateProjectTime + "days" +
-                ", Cost per mt2 =$" + costPerMt2 +
                 ", Name Site =" + super.name +
+                ", Estimate Project Cost =$" + estimateProjectCost +
                 ", Number of floors =" + numberOfFloors;
     }
 }
